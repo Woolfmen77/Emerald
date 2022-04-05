@@ -1,0 +1,10 @@
+com\rusanov\emerald\entity\Repair.class
+com\rusanov\emerald\entity\UserRole.class
+com\rusanov\emerald\entity\Address.class
+com\rusanov\emerald\entity\BuildingType.class
+com\rusanov\emerald\entity\Position.class
+com\rusanov\emerald\entity\Role.class
+com\rusanov\emerald\entity\PropertyType.class
+com\rusanov\emerald\entity\Service.class
+com\rusanov\emerald\entity\Property.class
+com\rusanov\emerald\entity\User.class
