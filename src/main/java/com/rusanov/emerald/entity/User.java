@@ -29,6 +29,9 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "user")
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Property> properties = new HashSet<Property>();
+
     public Long getId() {
         return id;
     }
@@ -85,17 +88,25 @@ public class User {
         this.userRoles = userRoles;
     }
 
+    public Set<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Set<Property> properties) {
+        this.properties = properties;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return phone == user.phone && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(birthday, user.birthday) && Objects.equals(userRoles, user.userRoles);
+        return phone == user.phone && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(birthday, user.birthday) && Objects.equals(userRoles, user.userRoles) && Objects.equals(properties, user.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, name, phone, birthday, userRoles);
+        return Objects.hash(id, email, password, name, phone, birthday, userRoles, properties);
     }
 
     @Override
@@ -108,6 +119,7 @@ public class User {
                 ", phone=" + phone +
                 ", birthday=" + birthday +
                 ", userRoles=" + userRoles +
+                ", properties=" + properties +
                 '}';
     }
 }

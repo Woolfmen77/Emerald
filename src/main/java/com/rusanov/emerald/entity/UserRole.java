@@ -12,11 +12,11 @@ public class UserRole {
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "role_id", nullable = false)
     private  Role role;
 
     public Long getId() {

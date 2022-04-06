@@ -59,6 +59,14 @@ public class Property {
     @JoinColumn (name = "service_id")
     private Service service;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private  User user;
+
+    @OneToOne(mappedBy = "property",cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Address address;
+
     public Long getId() {
         return id;
     }
@@ -179,17 +187,33 @@ public class Property {
         this.service = service;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Property property = (Property) o;
-        return numberRoom == property.numberRoom && balcony == property.balcony && floor == property.floor && constructionYear == property.constructionYear && Objects.equals(id, property.id) && Objects.equals(price, property.price) && Objects.equals(bathroom, property.bathroom) && Objects.equals(totalArea, property.totalArea) && Objects.equals(livingArea, property.livingArea) && Objects.equals(description, property.description) && Objects.equals(date, property.date) && Objects.equals(buildingType, property.buildingType) && Objects.equals(propertyType, property.propertyType) && Objects.equals(repair, property.repair) && Objects.equals(service, property.service);
+        return numberRoom == property.numberRoom && balcony == property.balcony && floor == property.floor && constructionYear == property.constructionYear && Objects.equals(id, property.id) && Objects.equals(price, property.price) && Objects.equals(bathroom, property.bathroom) && Objects.equals(totalArea, property.totalArea) && Objects.equals(livingArea, property.livingArea) && Objects.equals(description, property.description) && Objects.equals(date, property.date) && Objects.equals(buildingType, property.buildingType) && Objects.equals(propertyType, property.propertyType) && Objects.equals(repair, property.repair) && Objects.equals(service, property.service) && Objects.equals(user, property.user) && Objects.equals(address, property.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, numberRoom, price, bathroom, totalArea, livingArea, description, date, balcony, floor, constructionYear, buildingType, propertyType, repair, service);
+        return Objects.hash(id, numberRoom, price, bathroom, totalArea, livingArea, description, date, balcony, floor, constructionYear, buildingType, propertyType, repair, service, user, address);
     }
 
     @Override
@@ -210,6 +234,8 @@ public class Property {
                 ", propertyType=" + propertyType +
                 ", repair=" + repair +
                 ", service=" + service +
+                ", user=" + user +
+                ", address=" + address +
                 '}';
     }
 }

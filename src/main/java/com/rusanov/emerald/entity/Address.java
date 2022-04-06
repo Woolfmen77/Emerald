@@ -26,12 +26,9 @@ public class Address {
     @Column(name = "building_number")
     private int buildingNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private User user;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "property_id")
     private Property property;
 
     public Long getId() {
@@ -82,14 +79,6 @@ public class Address {
         this.buildingNumber = buildingNumber;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Property getProperty() {
         return property;
     }
@@ -103,12 +92,12 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return buildingNumber == address.buildingNumber && Objects.equals(id, address.id) && Objects.equals(region, address.region) && Objects.equals(city, address.city) && Objects.equals(district, address.district) && Objects.equals(street, address.street) && Objects.equals(user, address.user) && Objects.equals(property, address.property);
+        return buildingNumber == address.buildingNumber && Objects.equals(id, address.id) && Objects.equals(region, address.region) && Objects.equals(city, address.city) && Objects.equals(district, address.district) && Objects.equals(street, address.street) && Objects.equals(property, address.property);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, region, city, district, street, buildingNumber, user, property);
+        return Objects.hash(id, region, city, district, street, buildingNumber, property);
     }
 
     @Override
@@ -120,7 +109,6 @@ public class Address {
                 ", district='" + district + '\'' +
                 ", street='" + street + '\'' +
                 ", buildingNumber=" + buildingNumber +
-                ", user=" + user +
                 ", property=" + property +
                 '}';
     }
