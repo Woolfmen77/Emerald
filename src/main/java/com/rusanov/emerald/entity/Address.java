@@ -1,15 +1,13 @@
 package com.rusanov.emerald.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Address extends Model {
 
     @Column
     private String region;
@@ -21,23 +19,18 @@ public class Address {
     private String district;
 
     @Column
+    @NotNull
     private String street;
 
     @Column(name = "building_number")
-    private int buildingNumber;
+    private Integer buildingNumber;
 
     @OneToOne
     @MapsId
     @JoinColumn(name = "property_id")
     private Property property;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getRegion() {
         return region;
@@ -71,11 +64,11 @@ public class Address {
         this.street = street;
     }
 
-    public int getBuildingNumber() {
+    public Integer getBuildingNumber() {
         return buildingNumber;
     }
 
-    public void setBuildingNumber(int buildingNumber) {
+    public void setBuildingNumber(Integer buildingNumber) {
         this.buildingNumber = buildingNumber;
     }
 
@@ -87,29 +80,4 @@ public class Address {
         this.property = property;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address address = (Address) o;
-        return buildingNumber == address.buildingNumber && Objects.equals(id, address.id) && Objects.equals(region, address.region) && Objects.equals(city, address.city) && Objects.equals(district, address.district) && Objects.equals(street, address.street) && Objects.equals(property, address.property);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, region, city, district, street, buildingNumber, property);
-    }
-
-    @Override
-    public String toString() {
-        return "\nAddress{" +
-                "id=" + id +
-                ", region='" + region + '\'' +
-                ", city='" + city + '\'' +
-                ", district='" + district + '\'' +
-                ", street='" + street + '\'' +
-                ", buildingNumber=" + buildingNumber +
-                ", property=" + property +
-                '}';
-    }
 }

@@ -1,26 +1,19 @@
 package com.rusanov.emerald.entity;
 
+import com.rusanov.emerald.entity.enums.*;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Table
-public class Property {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Property extends Model{
 
     @Column(name = "number_room")
-    private int numberRoom;
+    private Integer numberRoom;
 
     @Column
     private BigDecimal price;
-
-    @Column
-    private String bathroom;
 
     @Column(name = "total_area")
     private BigDecimal totalArea;
@@ -32,54 +25,51 @@ public class Property {
     private String description;
 
     @Column
-    private Date date;
+    private Boolean balcony;
 
     @Column
-    private int balcony;
+    private Integer floor;
 
     @Column
-    private int floor;
-
-    @Column(name = "construction_year")
-    private int constructionYear;
-
-    @ManyToOne
-    @JoinColumn (name = "building_type_id")
-    private BuildingType buildingType;
-
-    @ManyToOne
-    @JoinColumn (name = "property_type_id")
-    private PropertyType propertyType;
-
-    @ManyToOne
-    @JoinColumn (name = "repair_id")
-    private Repair repair;
-
-    @ManyToOne
-    @JoinColumn (name = "service_id")
-    private Service service;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private  User user;
+    private Integer floors;
 
     @OneToOne(mappedBy = "property",cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Address address;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ApartmentEnum apartment;
 
-    public int getNumberRoom() {
+    @Column(name = "building_type")
+    @Enumerated(EnumType.STRING)
+    private BuildingTypeEnum buildingType;
+
+    @Column(name = "property_type")
+    @Enumerated(EnumType.STRING)
+    private PropertyTypeEnum propertyType;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private RepairEnum repair;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private CategoryEnum category;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private BathroomEnum bathroom;
+
+    public Integer getNumberRoom() {
         return numberRoom;
     }
 
-    public void setNumberRoom(int numberRoom) {
+    public void setNumberRoom(Integer numberRoom) {
         this.numberRoom = numberRoom;
     }
 
@@ -89,14 +79,6 @@ public class Property {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public String getBathroom() {
-        return bathroom;
-    }
-
-    public void setBathroom(String bathroom) {
-        this.bathroom = bathroom;
     }
 
     public BigDecimal getTotalArea() {
@@ -123,76 +105,28 @@ public class Property {
         this.description = description;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public int getBalcony() {
+    public Boolean getBalcony() {
         return balcony;
     }
 
-    public void setBalcony(int balcony) {
+    public void setBalcony(Boolean balcony) {
         this.balcony = balcony;
     }
 
-    public int getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 
-    public void setFloor(int floor) {
+    public void setFloor(Integer floor) {
         this.floor = floor;
     }
 
-    public int getConstructionYear() {
-        return constructionYear;
+    public Integer getFloors() {
+        return floors;
     }
 
-    public void setConstructionYear(int constructionYear) {
-        this.constructionYear = constructionYear;
-    }
-
-    public BuildingType getBuildingType() {
-        return buildingType;
-    }
-
-    public void setBuildingType(BuildingType buildingType) {
-        this.buildingType = buildingType;
-    }
-
-    public PropertyType getPropertyType() {
-        return propertyType;
-    }
-
-    public void setPropertyType(PropertyType propertyType) {
-        this.propertyType = propertyType;
-    }
-
-    public Repair getRepair() {
-        return repair;
-    }
-
-    public void setRepair(Repair repair) {
-        this.repair = repair;
-    }
-
-    public Service getService() {
-        return service;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setFloors(Integer floors) {
+        this.floors = floors;
     }
 
     public Address getAddress() {
@@ -203,39 +137,59 @@ public class Property {
         this.address = address;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Property property = (Property) o;
-        return numberRoom == property.numberRoom && balcony == property.balcony && floor == property.floor && constructionYear == property.constructionYear && Objects.equals(id, property.id) && Objects.equals(price, property.price) && Objects.equals(bathroom, property.bathroom) && Objects.equals(totalArea, property.totalArea) && Objects.equals(livingArea, property.livingArea) && Objects.equals(description, property.description) && Objects.equals(date, property.date) && Objects.equals(buildingType, property.buildingType) && Objects.equals(propertyType, property.propertyType) && Objects.equals(repair, property.repair) && Objects.equals(service, property.service) && Objects.equals(user, property.user) && Objects.equals(address, property.address);
+    public User getUser() {
+        return user;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, numberRoom, price, bathroom, totalArea, livingArea, description, date, balcony, floor, constructionYear, buildingType, propertyType, repair, service, user, address);
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "\nProperty{" +
-                "id=" + id +
-                ", numberRoom=" + numberRoom +
-                ", price=" + price +
-                ", bathroom='" + bathroom + '\'' +
-                ", totalArea=" + totalArea +
-                ", livingArea=" + livingArea +
-                ", description='" + description + '\'' +
-                ", date=" + date +
-                ", balcony=" + balcony +
-                ", floor=" + floor +
-                ", constructionYear=" + constructionYear +
-                ", buildingType=" + buildingType +
-                ", propertyType=" + propertyType +
-                ", repair=" + repair +
-                ", service=" + service +
-                ", user=" + user +
-                ", address=" + address +
-                '}';
+    public ApartmentEnum getApartment() {
+        return apartment;
+    }
+
+    public void setApartment(ApartmentEnum apartment) {
+        this.apartment = apartment;
+    }
+
+    public BuildingTypeEnum getBuildingType() {
+        return buildingType;
+    }
+
+    public void setBuildingType(BuildingTypeEnum buildingType) {
+        this.buildingType = buildingType;
+    }
+
+    public PropertyTypeEnum getPropertyType() {
+        return propertyType;
+    }
+
+    public void setPropertyType(PropertyTypeEnum propertyType) {
+        this.propertyType = propertyType;
+    }
+
+    public RepairEnum getRepair() {
+        return repair;
+    }
+
+    public void setRepair(RepairEnum repair) {
+        this.repair = repair;
+    }
+
+    public CategoryEnum getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEnum category) {
+        this.category = category;
+    }
+
+    public BathroomEnum getBathroom() {
+        return bathroom;
+    }
+
+    public void setBathroom(BathroomEnum bathroom) {
+        this.bathroom = bathroom;
     }
 }

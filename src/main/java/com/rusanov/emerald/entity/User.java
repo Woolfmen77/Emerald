@@ -1,43 +1,62 @@
 package com.rusanov.emerald.entity;
 
+import com.rusanov.emerald.entity.enums.RoleEnum;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.*;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User extends Model {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+//    @Column(unique=true)
+//    @Email(message="errors.invalid_email")
     @Column
+    @Email
     private String email;
 
     @Column
     private String password;
 
-    @Column
-    private String name;
+    @Column(unique=true)
+    private String username;
 
     @Column
-    private int phone;
+    private Long phone;
 
     @Column
-    private Date birthday;
+    private Boolean enabled;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<UserRole> userRoles = new HashSet<UserRole>();
+    @Column
+    private Date created;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Property> properties = new HashSet<Property>();
+    @Column
+    private String token;
 
-    public Long getId() {
-        return id;
+    @Column
+    private Date expiryDate;
+
+    @Column
+    @Transient
+    private String confirmPassword;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Property> property;
+
+    public User() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public String getEmail() {
@@ -56,70 +75,73 @@ public class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public int getPhone() {
+    public Long getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(Long phone) {
         this.phone = phone;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public Set<UserRole> getUserRoles() {
-        return userRoles;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setUserRoles(Set<UserRole> userRoles) {
-        this.userRoles = userRoles;
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
-    public Set<Property> getProperties() {
-        return properties;
+    public String getToken() {
+        return token;
     }
 
-    public void setProperties(Set<Property> properties) {
-        this.properties = properties;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return phone == user.phone && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(birthday, user.birthday) && Objects.equals(userRoles, user.userRoles) && Objects.equals(properties, user.properties);
+    public Date getExpiryDate() {
+        return expiryDate;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, password, name, phone, birthday, userRoles, properties);
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
+    }
+
+    public Set<Property> getProperty() {
+        return property;
+    }
+
+    public void setProperty(Set<Property> property) {
+        this.property = property;
     }
 
     @Override
     public String toString() {
-        return "\nUser{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", phone=" + phone +
-                ", birthday=" + birthday +
-                ", userRoles=" + userRoles +
-                ", properties=" + properties +
-                '}';
+        return "?token=" + token;
     }
+
 }
