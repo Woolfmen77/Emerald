@@ -1,29 +1,34 @@
 package com.rusanov.emerald.service;
 
 import com.rusanov.emerald.entity.User;
-import org.springframework.validation.BindingResult;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
-    public List<User> getUsers();
+    List<User> getUsers();
 
-    public User findByUsername (String username);
+    Optional<User> findByUsername(String username);
 
-    public User findByEmail(String email);
+    User findByEmail(String email);
 
-    public void saveUser(User user, HttpServletRequest request);
+    User getUserByToken(String token);
 
-    public  void  delete(Long theId);
+    void saveUser(User user, String email, HttpServletRequest request);
 
-    public User getUserByToken(String token);
+    void delete(Long theId);
 
-    public void confirmRegistration(String token);
+    void confirmRegistration(String token);
 
-    public String loginUser(String name, String response);
+    User update(Long theId);
 
-    public User update(Long theId);
+    void edit(User user, HttpServletRequest request);
 
-    public void edit(User user);
+    void adminEdit(User user);
+
+    List<User> getUserFilter(String filter);
+
+    List<User> getUserEnabled(Boolean enabled);
 }

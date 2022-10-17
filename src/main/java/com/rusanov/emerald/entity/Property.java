@@ -4,13 +4,40 @@ import com.rusanov.emerald.entity.enums.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table
-public class Property extends Model{
+public class Property extends Model {
 
-    @Column(name = "number_room")
-    private Integer numberRoom;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private CategoryEnum category;
+
+    @Column(name = "property_type")
+    @Enumerated(EnumType.STRING)
+    private PropertyTypeEnum propertyType;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ApartmentEnum apartment;
+
+    @Column(name = "building_type")
+    @Enumerated(EnumType.STRING)
+    private BuildingTypeEnum buildingType;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private RepairEnum repair;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private BathroomEnum bathroom;
+
+//    @Column(name = "number_room")
+//    private Integer numberRoom;
 
     @Column
     private BigDecimal price;
@@ -33,45 +60,123 @@ public class Property extends Model{
     @Column
     private Integer floors;
 
-    @OneToOne(mappedBy = "property",cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Address address;
+    @Column(name = "modification_date")
+    private LocalDate modificationDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @Column(name = "date_added")
+    private LocalDate dateAdded;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            mappedBy = "property")
+    private List<Image> images = new ArrayList<>();
+
+    @Column(name = "preview_image_id")
+    private Long previewImageId;
+
+    public void addImageToProperty(Image image) {
+        image.setProperty(this);
+        images.add(image);
+        images = images.stream().distinct().collect(Collectors.toList());
+//        HashSet<Image> set = new HashSet<>(images);
+//        images.clear();
+//        images.addAll(set);
+    }
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn
     private User user;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ApartmentEnum apartment;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
-    @Column(name = "building_type")
-    @Enumerated(EnumType.STRING)
-    private BuildingTypeEnum buildingType;
-
-    @Column(name = "property_type")
-    @Enumerated(EnumType.STRING)
-    private PropertyTypeEnum propertyType;
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private RepairEnum repair;
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private CategoryEnum category;
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private BathroomEnum bathroom;
-
-    public Integer getNumberRoom() {
-        return numberRoom;
+    public LocalDate getModificationDate() {
+        return modificationDate;
     }
 
-    public void setNumberRoom(Integer numberRoom) {
-        this.numberRoom = numberRoom;
+    public void setModificationDate(LocalDate modificationDate) {
+        this.modificationDate = modificationDate;
     }
+
+    public LocalDate getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(LocalDate dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public Long getPreviewImageId() {
+        return previewImageId;
+    }
+
+    public void setPreviewImageId(Long previewImageId) {
+        this.previewImageId = previewImageId;
+    }
+
+    public CategoryEnum getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEnum category) {
+        this.category = category;
+    }
+
+    public PropertyTypeEnum getPropertyType() {
+        return propertyType;
+    }
+
+    public void setPropertyType(PropertyTypeEnum propertyType) {
+        this.propertyType = propertyType;
+    }
+
+    public ApartmentEnum getApartment() {
+        return apartment;
+    }
+
+    public void setApartment(ApartmentEnum apartment) {
+        this.apartment = apartment;
+    }
+
+    public BuildingTypeEnum getBuildingType() {
+        return buildingType;
+    }
+
+    public void setBuildingType(BuildingTypeEnum buildingType) {
+        this.buildingType = buildingType;
+    }
+
+    public RepairEnum getRepair() {
+        return repair;
+    }
+
+    public void setRepair(RepairEnum repair) {
+        this.repair = repair;
+    }
+
+    public BathroomEnum getBathroom() {
+        return bathroom;
+    }
+
+    public void setBathroom(BathroomEnum bathroom) {
+        this.bathroom = bathroom;
+    }
+
+//    public Integer getNumberRoom() {
+//        return numberRoom;
+//    }
+//
+//    public void setNumberRoom(Integer numberRoom) {
+//        this.numberRoom = numberRoom;
+//    }
 
     public BigDecimal getPrice() {
         return price;
@@ -143,53 +248,5 @@ public class Property extends Model{
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public ApartmentEnum getApartment() {
-        return apartment;
-    }
-
-    public void setApartment(ApartmentEnum apartment) {
-        this.apartment = apartment;
-    }
-
-    public BuildingTypeEnum getBuildingType() {
-        return buildingType;
-    }
-
-    public void setBuildingType(BuildingTypeEnum buildingType) {
-        this.buildingType = buildingType;
-    }
-
-    public PropertyTypeEnum getPropertyType() {
-        return propertyType;
-    }
-
-    public void setPropertyType(PropertyTypeEnum propertyType) {
-        this.propertyType = propertyType;
-    }
-
-    public RepairEnum getRepair() {
-        return repair;
-    }
-
-    public void setRepair(RepairEnum repair) {
-        this.repair = repair;
-    }
-
-    public CategoryEnum getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryEnum category) {
-        this.category = category;
-    }
-
-    public BathroomEnum getBathroom() {
-        return bathroom;
-    }
-
-    public void setBathroom(BathroomEnum bathroom) {
-        this.bathroom = bathroom;
     }
 }

@@ -18,27 +18,23 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[]{
-                WebMvcConfig.class,  MailConfig.class
+                WebMvcConfig.class, MailConfig.class
         };
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] {
+        return new String[]{
                 "/"
         };
     }
 
-    // Фильтр позволяющий работать с русскими символами
     @Override
     protected Filter[] getServletFilters() {
-        // фильтр который позволит работать с русскими символами
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
-        // фильтр который добавляет поддержку HTTP  методов (например PUT)
         HiddenHttpMethodFilter httpMethodFilter = new HiddenHttpMethodFilter();
         return new Filter[]{characterEncodingFilter, httpMethodFilter};
     }
-
 }

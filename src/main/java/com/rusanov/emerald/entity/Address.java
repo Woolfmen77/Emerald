@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -19,18 +20,21 @@ public class Address extends Model {
     private String district;
 
     @Column
-    @NotNull
     private String street;
 
     @Column(name = "building_number")
     private Integer buildingNumber;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "property_id")
+    @OneToOne(mappedBy = "address")
     private Property property;
 
+    public Property getProperty() {
+        return property;
+    }
 
+    public void setProperty(Property property) {
+        this.property = property;
+    }
 
     public String getRegion() {
         return region;
@@ -71,13 +75,4 @@ public class Address extends Model {
     public void setBuildingNumber(Integer buildingNumber) {
         this.buildingNumber = buildingNumber;
     }
-
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
-    }
-
 }

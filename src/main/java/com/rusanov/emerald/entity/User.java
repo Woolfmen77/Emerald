@@ -3,24 +3,26 @@ package com.rusanov.emerald.entity;
 import com.rusanov.emerald.entity.enums.RoleEnum;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
 public class User extends Model {
 
-//    @Column(unique=true)
-//    @Email(message="errors.invalid_email")
     @Column
-    @Email
     private String email;
 
     @Column
     private String password;
 
-    @Column(unique=true)
+    @Column(name = "login")
     private String username;
+
+    @Column
+    private String name;
 
     @Column
     private Long phone;
@@ -34,7 +36,7 @@ public class User extends Model {
     @Column
     private String token;
 
-    @Column
+    @Column(name = "expiry_date")
     private Date expiryDate;
 
     @Column
@@ -45,10 +47,18 @@ public class User extends Model {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Property> property;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Property> property = new ArrayList<>();
 
     public User() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getConfirmPassword() {
@@ -131,17 +141,41 @@ public class User extends Model {
         this.role = role;
     }
 
-    public Set<Property> getProperty() {
+    public List<Property> getProperty() {
         return property;
     }
 
-    public void setProperty(Set<Property> property) {
+    public void setProperty(List<Property> property) {
         this.property = property;
     }
 
     @Override
-    public String toString() {
-        return "?token=" + token;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(username, user.username) && Objects.equals(phone, user.phone) && Objects.equals(enabled, user.enabled) && Objects.equals(created, user.created) && Objects.equals(token, user.token) && Objects.equals(expiryDate, user.expiryDate) && Objects.equals(confirmPassword, user.confirmPassword) && role == user.role && Objects.equals(property, user.property);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, password, username, phone, enabled, created, token, expiryDate, confirmPassword, role, property);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", phone=" + phone +
+                ", enabled=" + enabled +
+                ", created=" + created +
+                ", token='" + token + '\'' +
+                ", expiryDate=" + expiryDate +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", role=" + role +
+                ", property=" + property +
+                '}';
+    }
 }

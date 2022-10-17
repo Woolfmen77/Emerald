@@ -6,21 +6,17 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
 @Component
-public class    SendEmailService {
+public class SendEmailService {
 
     @Autowired
     private MailSender mailSender;
 
-    public void sendMail(String message) {
-
+    public void sendMail(String message, String email) {
         SimpleMailMessage msg = new SimpleMailMessage();
-
         msg.setFrom("Woolfmen77@gmail.com");
-        msg.setTo("rusanov_zhen@mail.ru");
-        msg.setSubject("Для подтверждения почтового адреса, пройтите пожалуйста по ссылке.");
+        msg.setTo(email);
+        msg.setSubject("Для подтверждения почтового адреса, пройдите пожалуйста по ссылке.");
         msg.setText(message);
-
         mailSender.send(msg);
-
     }
 }
